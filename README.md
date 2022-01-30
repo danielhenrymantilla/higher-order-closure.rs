@@ -252,7 +252,34 @@ nested function or type definitions).
 In order to make them available, `higher_order_signature!` accepts an initial
 optional `#![with<simple generics…>]` parameter (or even
 `#![with<simple generics…> where clauses…]` if the "simple shape"
-restrictions[^2] for the generic parameters are too restrictive).
+restrictions for the generic parameters are too restrictive).
+
+<details><summary>"simple shaped" generics macro restrictions</summary>
+
+The generics parameters inside `#![with<…>]` have to be of the form:
+
+```rust ,ignore
+<
+    'a, 'b : 'a, ...
+    T, U : ?Sized + 'a + ::core::fmt::Debug, V, ...
+>
+```
+
+Mainly:
+
+  - at most one super-lifetime bound on each lifetime,
+
+  - the super-bounds on the types must be exactly of the form:
+     1. optional `?Sized`,
+     1. followed by an optional lifetime bound,
+     1. followed by an optional trait bound.
+     1. And nothing more.
+    If you need more versatility, use the `where` clauses.
+
+In practice, however, the bounds are seldom needed, since such generics are only
+used for the _signature_ of the closure, not its body / implementation.
+
+</details>
 
 
 ```rust
@@ -318,18 +345,5 @@ fn main ()
 higher-order signatures embedded as `Fn` bounds on its parameters, thus making
 it act as a "funnel" that only lets closure with the right signature pass
 through).
-
-[^2]: those generics have to be of the form:
-```rust ,ignore
-<
-    'a, 'b : 'a, ...
-    T, U : ?Sized + 'a + ::core::fmt::Debug, V, ...
->
-```
-Mainly, at most one super-lifetime bound on each lifetime, and the super-bounds
-on the types must be exactly of the form: optional `?Sized`, followed by an
-optional lifetime bound, followed by an optional trait bound. And nothing more.
-If you need more versatility, use the `where` clauses. In practice, however, the
-bounds are seldom needed.
 
 [lifetime elision rules]: https://doc.rust-lang.org/1.58.1/reference/lifetime-elision.html#lifetime-elision-in-functions
