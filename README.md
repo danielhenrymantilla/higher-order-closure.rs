@@ -21,6 +21,11 @@ https://github.com/danielhenrymantilla/higher-order-closure.rs/actions)
 
 ### Motivation / Rationale
 
+See the [RFC #3216](https://github.com/rust-lang/rfcs/pull/3216): this crate
+is a Proof-of-Concept of the ideas laid out there[^1].
+
+[ˆ1]: with the exception of allowing elided lifetimes to have a meaning (chosen higher-order), which the RFC cannot do in order to be future-proof.
+
 <details><summary>Click to expand</summary>
 
 The following example fails to compile:
@@ -245,7 +250,7 @@ fn main ()
 
 #### Outer generic parameters
 
-Given how the macro internally works[^1], generic parameters "in scope" won't,
+Given how the macro internally works[^2], generic parameters "in scope" won't,
 by default, be available in the closure signature (similar to `const`s and
 nested function or type definitions).
 
@@ -341,7 +346,7 @@ fn main ()
 }
 ```
 
-[^1]: it generates a "closure identity" helper function, with the desired
+[^2]: it generates a "closure identity" helper function, with the desired
 higher-order signatures embedded as `Fn` bounds on its parameters, thus making
 it act as a "funnel" that only lets closure with the right signature pass
 through).
