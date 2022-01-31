@@ -22,7 +22,7 @@ https://github.com/danielhenrymantilla/higher-order-closure.rs/actions)
 ### Motivation / Rationale
 
 See the [RFC #3216](https://github.com/rust-lang/rfcs/pull/3216): this crate
-is a Proof-of-Concept of the ideas laid out there[^1].
+is a Proof-of-Concept of the ideas laid out therein[^1].
 
 [^1]: with the exception of allowing elided lifetimes to have a meaning (chosen higher-order), which the RFC cannot do in order to be future-proof.
 
